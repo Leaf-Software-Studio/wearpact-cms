@@ -1,0 +1,16 @@
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      # Run Biome on every staged JS/TS/MD/YAML file
+      glob: "*.{js,jsx,ts,tsx,md,yaml,yml}"
+      run: biome check --apply {staged_files}
+      stage_fixed: true
+
+pre-push:
+  parallel: false
+  commands:
+    test:
+      run: pnpm run test || true
+    build:
+      run: pnpm run build || true

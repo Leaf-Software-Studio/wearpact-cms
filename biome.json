@@ -1,0 +1,58 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.0/schema.json",
+  "extends": ["@biome:recommended"],
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "useKeyWithClickEvents": "off"
+      },
+      "correctness": {
+        "noUnusedImports": "warn",
+        "useExhaustiveDependencies": "warn"
+      },
+      "style": {
+        "noNonNullAssertion": "warn",
+        "useImportType": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noUnusedVariables": "warn",
+        "banTsComment": "warn"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "lineWidth": 120,
+    "indentWidth": 2,
+    "indentStyle": "space",
+    "lineEnding": "lf",
+    "trailingCommas": "none"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "all",
+      "bracketSpacing": true,
+      "arrowParens": "asNeeded",
+      "arrowFunctionParentheses": "asNeeded",
+      "objectCurlySpacing": true,
+      "arrayBracketSpacing": "always",
+      "jsxBracketSameLine": false,
+      "jsxSingleQuote": false
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
+  },
+  "files": {
+    "include": ["**/*.{js,jsx,ts,tsx,json,md,yml,yaml}"],
+    "ignore": ["node_modules", "dist", ".next"]
+  }
+}
