@@ -1,9 +1,12 @@
 # lefthook.yml
 pre-commit:
-  parallel: true
+  parallel: false
   commands:
-    biome:
-      # Run Biome on every staged JS/TS/MD/YAML file
+    biome_format:
+      glob: "*.{js,jsx,ts,tsx,json,md,yaml,yml}"
+      run: pnpm exec biome format {staged_files}
+      stage_fixed: true
+    biome_check:
       glob: "*.{js,jsx,ts,tsx,json,md,yaml,yml}"
       run: pnpm exec biome check --write {staged_files}
       stage_fixed: true

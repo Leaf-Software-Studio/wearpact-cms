@@ -37,5 +37,5 @@
       "source.fixAll.eslint": "explicit"
     }
   },
-  "cSpell.words": ["lefthook"]
+  "cSpell.words": ["importmap", "lefthook", "payloadcms"]
 }
