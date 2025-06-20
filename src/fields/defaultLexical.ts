@@ -1,13 +1,13 @@
-import type { TextFieldSingleValidation } from 'payload'
 import {
   BoldFeature,
   ItalicFeature,
   LinkFeature,
-  ParagraphFeature,
-  lexicalEditor,
-  UnderlineFeature,
   type LinkFields,
+  lexicalEditor,
+  ParagraphFeature,
+  UnderlineFeature,
 } from '@payloadcms/richtext-lexical'
+import type { TextFieldSingleValidation } from 'payload'
 
 export const defaultLexical = lexicalEditor({
   features: [
@@ -18,7 +18,7 @@ export const defaultLexical = lexicalEditor({
     LinkFeature({
       enabledCollections: ['pages', 'posts'],
       fields: ({ defaultFields }) => {
-        const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
+        const defaultFieldsWithoutUrl = defaultFields.filter(field => {
           if ('name' in field && field.name === 'url') return false
           return true
         })

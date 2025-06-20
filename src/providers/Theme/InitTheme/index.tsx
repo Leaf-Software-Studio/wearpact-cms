@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/nursery/useUniqueElementIds: Payload CMS Template */
+/** biome-ignore-all lint/security/noDangerouslySetInnerHtml: Payload CMS Template */
 import Script from 'next/script'
 import React from 'react'
 

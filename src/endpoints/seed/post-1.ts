@@ -1,5 +1,6 @@
-import type { Media, User } from '@/payload-types'
+/** biome-ignore-all lint/suspicious/noTemplateCurlyInString: Payload CMS Template */
 import { RequiredDataFromCollectionSlug } from 'payload'
+import type { Media, User } from '@/payload-types'
 
 export type PostArgs = {
   heroImage: Media

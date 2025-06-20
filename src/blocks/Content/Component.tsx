@@ -1,12 +1,12 @@
-import { cn } from '@/utilities/ui'
+/** biome-ignore-all lint/style/noNonNullAssertion: Initial Payload CMS */
 import React from 'react'
 import RichText from '@/components/RichText'
-
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
+import { cn } from '@/utilities/ui'
 
 import { CMSLink } from '../../components/Link'
 
-export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
+export const ContentBlock: React.FC<ContentBlockProps> = props => {
   const { columns } = props
 
   const colsSpanClasses = {
@@ -21,7 +21,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
       <div className="grid grid-cols-4 lg:grid-cols-12 gap-y-8 gap-x-16">
         {columns &&
           columns.length > 0 &&
-          columns.map((col, index) => {
+          columns.map(col => {
             const { enableLink, link, richText, size } = col
 
             return (
@@ -29,7 +29,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                 className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
                   'md:col-span-2': size !== 'full',
                 })}
-                key={index}
+                key={col.id}
               >
                 {richText && <RichText data={richText} enableGutter={false} />}
 

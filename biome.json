@@ -42,7 +42,17 @@
     }
   },
   "files": {
-    "includes": ["**/*.{js,jsx,ts,tsx,json,md,yml,yaml}"],
-    "ignoreUnknown": false
+    "includes": ["src/**/*.{js,jsx,ts,tsx,json,md,yml,yaml}"],
+    "ignoreUnknown": false,
+    "experimentalScannerIgnores": [
+      ".next/**",
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      "coverage/**",
+      ".git/**",
+      "*.min.js",
+      "*.bundle.js"
+    ]
   }
 }

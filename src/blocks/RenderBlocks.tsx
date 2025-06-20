@@ -1,12 +1,10 @@
 import React, { Fragment } from 'react'
-
-import type { Page } from '@/payload-types'
-
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import type { Page } from '@/payload-types'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -18,7 +16,7 @@ const blockComponents = {
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
-}> = (props) => {
+}> = props => {
   const { blocks } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
@@ -26,7 +24,7 @@ export const RenderBlocks: React.FC<{
   if (hasBlocks) {
     return (
       <Fragment>
-        {blocks.map((block, index) => {
+        {blocks.map(block => {
           const { blockType } = block
 
           if (blockType && blockType in blockComponents) {
@@ -34,7 +32,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div className="my-16" key={block.id}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

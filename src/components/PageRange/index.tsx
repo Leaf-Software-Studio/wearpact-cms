@@ -22,15 +22,8 @@ export const PageRange: React.FC<{
   currentPage?: number
   limit?: number
   totalDocs?: number
-}> = (props) => {
-  const {
-    className,
-    collection,
-    collectionLabels: collectionLabelsFromProps,
-    currentPage,
-    limit,
-    totalDocs,
-  } = props
+}> = props => {
+  const { className, collection, collectionLabels: collectionLabelsFromProps, currentPage, limit, totalDocs } = props
 
   let indexStart = (currentPage ? currentPage - 1 : 1) * (limit || 1) + 1
   if (totalDocs && indexStart > totalDocs) indexStart = 0
@@ -39,10 +32,7 @@ export const PageRange: React.FC<{
   if (totalDocs && indexEnd > totalDocs) indexEnd = totalDocs
 
   const { plural, singular } =
-    collectionLabelsFromProps ||
-    (collection ? defaultCollectionLabels[collection] : undefined) ||
-    defaultLabels ||
-    {}
+    collectionLabelsFromProps || (collection ? defaultCollectionLabels[collection] : undefined) || defaultLabels || {}
 
   return (
     <div className={[className, 'font-semibold'].filter(Boolean).join(' ')}>

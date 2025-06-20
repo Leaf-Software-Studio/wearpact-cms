@@ -1,4 +1,4 @@
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import type { CollectionSlug, File, GlobalSlug, Payload, PayloadRequest } from 'payload'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
@@ -10,28 +10,14 @@ import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
 
-const collections: CollectionSlug[] = [
-  'categories',
-  'media',
-  'pages',
-  'posts',
-  'forms',
-  'form-submissions',
-  'search',
-]
+const collections: CollectionSlug[] = ['categories', 'media', 'pages', 'posts', 'forms', 'form-submissions', 'search']
 const globals: GlobalSlug[] = ['header', 'footer']
 
 // Next.js revalidation errors are normal when seeding the database without a server running
 // i.e. running `yarn seed` locally instead of using the admin UI within an active app
 // The app is not running to revalidate the pages and so the API routes are not available
 // These error messages can be ignored: `Error hitting revalidate route for...`
-export const seed = async ({
-  payload,
-  req,
-}: {
-  payload: Payload
-  req: PayloadRequest
-}): Promise<void> => {
+export const seed = async ({ payload, req }: { payload: Payload; req: PayloadRequest }): Promise<void> => {
   payload.logger.info('Seeding database...')
 
   // we need to clear the media directory before seeding
@@ -42,7 +28,7 @@ export const seed = async ({
 
   // clear the database
   await Promise.all(
-    globals.map((global) =>
+    globals.map(global =>
       payload.updateGlobal({
         slug: global,
         data: {
@@ -56,14 +42,12 @@ export const seed = async ({
     ),
   )
 
-  await Promise.all(
-    collections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
-  )
+  await Promise.all(collections.map(collection => payload.db.deleteMany({ collection, req, where: {} })))
 
   await Promise.all(
     collections
-      .filter((collection) => Boolean(payload.collections[collection].config.versions))
-      .map((collection) => payload.db.deleteVersions({ collection, req, where: {} })),
+      .filter(collection => Boolean(payload.collections[collection].config.versions))
+      .map(collection => payload.db.deleteVersions({ collection, req, where: {} })),
   )
 
   payload.logger.info(`— Seeding demo author and user...`)

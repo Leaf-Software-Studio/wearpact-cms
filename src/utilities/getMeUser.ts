@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/style/noNonNullAssertion: Payload CMS Template */
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 

@@ -1,15 +1,13 @@
 'use client'
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
-
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-
-import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
+import { fields } from './fields'
 
 export type FormBlockType = {
   blockName?: string
@@ -23,7 +21,7 @@ export const FormBlock: React.FC<
   {
     id?: string
   } & FormBlockType
-> = (props) => {
+> = props => {
   const {
     enableIntro,
     form: formFromProps,
@@ -120,35 +118,31 @@ export const FormBlock: React.FC<
       )}
       <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
         <FormProvider {...formMethods}>
-          {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <RichText data={confirmationMessage} />
-          )}
+          {!isLoading && hasSubmitted && confirmationType === 'message' && <RichText data={confirmationMessage} />}
           {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
           {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
           {!hasSubmitted && (
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4 last:mb-0">
-                {formFromProps &&
-                  formFromProps.fields &&
-                  formFromProps.fields?.map((field, index) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-                    if (Field) {
-                      return (
-                        <div className="mb-6 last:mb-0" key={index}>
-                          <Field
-                            form={formFromProps}
-                            {...field}
-                            {...formMethods}
-                            control={control}
-                            errors={errors}
-                            register={register}
-                          />
-                        </div>
-                      )
-                    }
-                    return null
-                  })}
+                {formFromProps?.fields?.map(field => {
+                  // biome-ignore lint/suspicious/noExplicitAny: Payload CMS Template
+                  const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                  if (Field) {
+                    return (
+                      <div className="mb-6 last:mb-0" key={field.blockType}>
+                        <Field
+                          form={formFromProps}
+                          {...field}
+                          {...formMethods}
+                          control={control}
+                          errors={errors}
+                          register={register}
+                        />
+                      </div>
+                    )
+                  }
+                  return null
+                })}
               </div>
 
               <Button form={formID} type="submit" variant="default">

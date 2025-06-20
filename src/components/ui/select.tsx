@@ -1,9 +1,9 @@
 'use client'
 
-import { cn } from '@/utilities/ui'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown, ChevronUp } from 'lucide-react'
 import * as React from 'react'
+import { cn } from '@/utilities/ui'
 
 const Select = SelectPrimitive.Root
 
@@ -42,9 +42,7 @@ const SelectScrollUpButton: React.FC<
 )
 
 const SelectScrollDownButton: React.FC<
-  { ref?: React.Ref<HTMLDivElement> } & React.ComponentProps<
-    typeof SelectPrimitive.ScrollDownButton
-  >
+  { ref?: React.Ref<HTMLDivElement> } & React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>
 > = ({ className, ref, ...props }) => (
   <SelectPrimitive.ScrollDownButton
     className={cn('flex cursor-default items-center justify-center py-1', className)}
@@ -90,17 +88,11 @@ const SelectContent: React.FC<
 const SelectLabel: React.FC<
   { ref?: React.Ref<HTMLDivElement> } & React.ComponentProps<typeof SelectPrimitive.Label>
 > = ({ className, ref, ...props }) => (
-  <SelectPrimitive.Label
-    className={cn('py-1.5 pl-8 pr-2 text-sm font-semibold', className)}
-    ref={ref}
-    {...props}
-  />
+  <SelectPrimitive.Label className={cn('py-1.5 pl-8 pr-2 text-sm font-semibold', className)} ref={ref} {...props} />
 )
 
 const SelectItem: React.FC<
-  { ref?: React.Ref<HTMLDivElement>; value: string } & React.ComponentProps<
-    typeof SelectPrimitive.Item
-  >
+  { ref?: React.Ref<HTMLDivElement>; value: string } & React.ComponentProps<typeof SelectPrimitive.Item>
 > = ({ children, className, ref, ...props }) => (
   <SelectPrimitive.Item
     className={cn(
@@ -123,11 +115,7 @@ const SelectItem: React.FC<
 const SelectSeparator: React.FC<
   { ref?: React.Ref<HTMLDivElement> } & React.ComponentProps<typeof SelectPrimitive.Separator>
 > = ({ className, ref, ...props }) => (
-  <SelectPrimitive.Separator
-    className={cn('-mx-1 my-1 h-px bg-muted', className)}
-    ref={ref}
-    {...props}
-  />
+  <SelectPrimitive.Separator className={cn('-mx-1 my-1 h-px bg-muted', className)} ref={ref} {...props} />
 )
 
 export {

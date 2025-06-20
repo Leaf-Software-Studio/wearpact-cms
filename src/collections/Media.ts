@@ -1,11 +1,7 @@
-import type { CollectionConfig } from 'payload'
-
-import {
-  FixedToolbarFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+/** biome-ignore-all lint/style/useNodejsImportProtocol: Payload CMS Template */
+import { FixedToolbarFeature, InlineToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
+import type { CollectionConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'

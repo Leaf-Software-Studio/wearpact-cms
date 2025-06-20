@@ -1,5 +1,5 @@
+/** biome-ignore-all lint/performance/noImgElement: Payload CMS Template */
 import clsx from 'clsx'
-import React from 'react'
 
 interface Props {
   className?: string

@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noShadowRestrictedNames: Payload CMS Template */
 import { Checkbox } from './Checkbox'
 import { Country } from './Country'
 import { Email } from './Email'

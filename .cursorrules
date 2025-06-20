@@ -1,0 +1,1335 @@
+# Cursor Rules for PayloadCMS + Next.js + React + TypeScript + MongoDB Project
+
+## Project Overview
+
+This is a PayloadCMS project using Next.js 15, React 19, TypeScript, and MongoDB. The project uses Biome for linting and formatting, and follows modern React patterns with server components.
+
+## Code Style & Formatting
+
+### General Rules
+
+- Use TypeScript strict mode
+- Prefer functional components with hooks
+- Use modern React patterns (server components, client components)
+- Follow PayloadCMS conventions for collections, fields, and blocks
+- Use proper TypeScript types from `payload-types.ts`
+
+### File Naming & Structure
+
+- Use kebab-case for file names: `my-component.tsx`
+- Use PascalCase for component names: `MyComponent`
+- Use camelCase for variables, functions, and properties
+- Use UPPER_SNAKE_CASE for constants
+- Group related files in directories with index files
+
+### Import Organization (Biome)
+
+- Group imports: built-ins, external libraries, internal modules, relative imports
+- Use absolute imports for internal modules when possible
+- Use relative imports for closely related files
+- Remove unused imports automatically
+
+### Export & Import Rules
+
+- **Never use namespace exports** - prefer named exports
+- Use named exports for all components, utilities, and types
+- If Props interface is not exported, name it `Props` (not `ComponentNameProps`)
+- Use barrel exports (index.ts files) for clean imports
+
+### Component Structure & Memoization
+
+- If a component has props, memoize it at the end using the pattern:
+
+  ```typescript
+  const ComponentName_ = ({ ...props }: Props) => {
+    // component logic
+  };
+
+  export const ComponentName = memo(ComponentName_);
+  ```
+
+- Use React.memo for components that receive props to prevent unnecessary re-renders
+- Only memoize components that actually benefit from it (avoid premature optimization)
+
+### Fractal Structure & Barrel Exports
+
+- Use fractal structure for components: organize by feature/domain, not by type
+- Each folder should have an `index.ts` file that exports all public APIs
+- Structure: `feature/component/index.ts` exports the component
+- Structure: `feature/index.ts` exports all components from that feature
+- Example structure:
+  ```
+  components/
+    ui/
+      button/
+        index.ts (exports Button)
+        Button.tsx
+      card/
+        index.ts (exports Card)
+        Card.tsx
+      index.ts (exports Button, Card)
+    forms/
+      contact-form/
+        index.ts (exports ContactForm)
+        ContactForm.tsx
+        ContactFormFields.tsx
+      index.ts (exports ContactForm)
+    index.ts (exports ui, forms)
+  ```
+
+## TypeScript Best Practices
+
+### Type Definitions
+
+- Always define proper types for props, state, and function parameters
+- Use PayloadCMS generated types from `payload-types.ts`
+- Prefer interfaces over types for object shapes
+- Use utility types: `Partial<T>`, `Pick<T, K>`, `Omit<T, K>`
+- Use generic types for reusable components
+
+### Strict TypeScript Rules
+
+- No `any` types - use proper typing
+- No implicit any returns
+- Use strict null checks
+- Prefer readonly arrays and objects when possible
+- Use const assertions for literal types
+
+## React Best Practices
+
+### Component Structure
+
+- Use server components by default (no "use client" directive)
+- Add "use client" only when needed (interactivity, hooks, browser APIs)
+- Keep components small and focused
+- Use composition over inheritance
+- Prefer controlled components
+
+### Hooks Usage
+
+- Follow rules of hooks (only call at top level)
+- Use custom hooks for reusable logic
+- Prefer `useCallback` and `useMemo` for expensive operations
+- Use proper dependency arrays
+- Avoid unnecessary re-renders
+
+### State Management
+
+- Use React state for local component state
+- Use PayloadCMS hooks for data fetching
+- Prefer server-side data fetching when possible
+- Use proper error boundaries
+
+## PayloadCMS Specific Rules
+
+### Collections
+
+- Follow PayloadCMS collection structure
+- Use proper field types and validation
+- Implement proper access control
+- Use hooks for data population and revalidation
+- Follow naming conventions for collections
+- Use singular names for collections: `Post`, `User`, `Category`
+- Implement proper `admin` configuration for collections
+- Use `timestamps` for automatic created/updated tracking
+- Implement proper `slug` fields with `unique: true`
+- Use `localized` fields for multi-language support
+- Implement proper `hooks` for data transformation and validation
+- Use `endpoints` for custom API functionality
+- Implement proper `access` control with `read`, `create`, `update`, `delete` permissions
+- Use `admin` field overrides for custom admin UI components
+
+### Fields & Blocks
+
+- Use semantic field types
+- Implement proper validation
+- Use custom field components when needed
+- Follow block structure for content blocks
+- Use proper field relationships
+- Use `text` fields for short text content
+- Use `textarea` fields for longer text content
+- Use `richText` fields for formatted content with Lexical
+- Use `select` fields for predefined options
+- Use `checkbox` fields for boolean values
+- Use `number` fields for numeric values
+- Use `date` fields for date/time values
+- Use `upload` fields for media files
+- Use `relationship` fields for references to other collections
+- Use `array` fields for repeatable content
+- Use `group` fields for organizing related fields
+- Use `tabs` for organizing complex forms
+- Use `collapsible` fields for optional content
+- Use `conditional` fields for dynamic form behavior
+- Use `row` fields for horizontal field layouts
+- Use `ui` field for custom UI components
+
+### Blocks & Content Blocks
+
+- Use `blocks` field for flexible content layouts
+- Create reusable block types for common content patterns
+- Use `group` fields within blocks for organized content
+- Implement proper block validation
+- Use `admin` configuration for block appearance
+- Create custom block components for complex layouts
+- Use `localized` blocks for multi-language content
+- Implement proper block relationships
+- Use `hooks` for block data transformation
+- Create block-specific validation rules
+
+### API & Data Fetching
+
+- Use PayloadCMS generated types
+- Implement proper error handling
+- Use server-side rendering when possible
+- Cache data appropriately
+- Handle loading and error states
+- Use `getPayload()` for server-side data fetching
+- Use `payload.find()` for querying collections
+- Use `payload.findByID()` for single document queries
+- Use `payload.create()` for creating documents
+- Use `payload.update()` for updating documents
+- Use `payload.delete()` for deleting documents
+- Use proper query parameters: `where`, `sort`, `limit`, `page`
+- Use `populate` for loading related data
+- Use `depth` parameter for nested population
+- Use `locale` parameter for localized content
+- Use `draft` parameter for draft content
+- Use `fallback-locale` for fallback content
+- Implement proper pagination with `totalDocs`, `totalPages`
+- Use `payload.request()` for custom API calls
+- Use `payload.authenticateUser()` for authentication
+- Use `payload.verifyEmail()` for email verification
+
+### Hooks & Lifecycle
+
+- Use `beforeValidate` hooks for data validation
+- Use `beforeChange` hooks for data transformation
+- Use `afterChange` hooks for side effects
+- Use `beforeRead` hooks for access control
+- Use `afterRead` hooks for data modification
+- Use `beforeDelete` hooks for cleanup
+- Use `afterDelete` hooks for side effects
+- Use `beforeLogin` hooks for login validation
+- Use `afterLogin` hooks for post-login actions
+- Use `beforeLogout` hooks for cleanup
+- Use `afterLogout` hooks for side effects
+- Use `beforeForgotPassword` hooks for validation
+- Use `afterForgotPassword` hooks for notifications
+- Use `beforeResetPassword` hooks for validation
+- Use `afterResetPassword` hooks for notifications
+- Use `beforeVerifyEmail` hooks for validation
+- Use `afterVerifyEmail` hooks for notifications
+
+### Access Control
+
+- Implement proper `access` control for all collections
+- Use `read` access for viewing documents
+- Use `create` access for creating documents
+- Use `update` access for updating documents
+- Use `delete` access for deleting documents
+- Use `admin` access for admin panel access
+- Use `readVersions` access for version history
+- Use `updateVersions` access for version management
+- Use `readDrafts` access for draft content
+- Use `updateDrafts` access for draft management
+- Use `publish` access for publishing content
+- Use `unpublish` access for unpublishing content
+- Use `duplicate` access for duplicating documents
+- Use `lock` access for locking documents
+- Use `unlock` access for unlocking documents
+- Use `admin` access for admin panel access
+- Use `admin.collections` access for collection management
+- Use `admin.globals` access for global management
+- Use `admin.users` access for user management
+- Use `admin.roles` access for role management
+
+### Admin UI Customization
+
+- Use `admin.components` for custom admin components
+- Use `admin.css` for custom admin styles
+- Use `admin.meta` for collection metadata
+- Use `admin.description` for collection descriptions
+- Use `admin.useAsTitle` for display titles
+- Use `admin.defaultColumns` for list view columns
+- Use `admin.group` for organizing collections
+- Use `admin.hidden` for hiding collections
+- Use `admin.disableDuplicate` for disabling duplication
+- Use `admin.enableRichTextRelationship` for rich text relationships
+- Use `admin.enableRichTextLink` for rich text links
+- Use `admin.enableRichTextUpload` for rich text uploads
+- Use `admin.preview` for preview functionality
+- Use `admin.livePreview` for live preview
+- Use `admin.views` for custom admin views
+
+### Media & File Management
+
+- Use `upload` fields for file uploads
+- Use `imageSizes` for image resizing
+- Use `mimeTypes` for file type restrictions
+- Use `filesRequired` for required file uploads
+- Use `staticURL` for static file serving
+- Use `staticDir` for static file directory
+- Use `imageSizes` for automatic image resizing
+- Use `adminThumbnail` for admin thumbnails
+- Use `adminPreview` for admin previews
+- Use `formatFilename` for custom filename formatting
+- Use `generateFileURL` for custom file URLs
+- Use `beforeUpload` hooks for upload validation
+- Use `afterUpload` hooks for upload processing
+- Use `beforeDelete` hooks for file cleanup
+
+### Validation & Error Handling
+
+- Use `required` for required fields
+- Use `minLength` and `maxLength` for text validation
+- Use `min` and `max` for number validation
+- Use `pattern` for regex validation
+- Use `validate` for custom validation functions
+- Use `unique` for unique field validation
+- Use `hasMany` for relationship validation
+- Use `filterOptions` for relationship filtering
+- Use `admin.condition` for conditional field display
+- Use `admin.readOnly` for read-only fields
+- Use `admin.disabled` for disabled fields
+- Use `admin.hidden` for hidden fields
+- Use `admin.position` for field positioning
+- Use `admin.width` for field width
+- Use `admin.style` for field styling
+
+### Performance & Optimization
+
+- Use `index` for database indexing
+- Use `unique` for unique constraints
+- Use `sparse` for sparse indexes
+- Use `populate` efficiently
+- Use `depth` parameter to limit population depth
+- Use `limit` and `page` for pagination
+- Use `sort` for efficient sorting
+- Use `where` for efficient filtering
+- Use `select` for field selection
+- Use `exclude` for field exclusion
+- Use `localized` fields efficiently
+- Use `draft` content appropriately
+- Use `publishedAt` for publication tracking
+- Use `status` for content status management
+- Use `versioning` for content versioning
+
+### Security Best Practices
+
+- Implement proper access control
+- Validate all user inputs
+- Sanitize data before storage
+- Use proper authentication
+- Use proper authorization
+- Use `admin.hidden` for sensitive fields
+- Use `admin.readOnly` for sensitive data
+- Use `admin.condition` for conditional access
+- Use `hooks` for data validation
+- Use `beforeChange` hooks for data sanitization
+- Use `afterChange` hooks for security logging
+- Use `beforeDelete` hooks for security checks
+- Use `afterDelete` hooks for security cleanup
+- Use `beforeLogin` hooks for login security
+- Use `afterLogin` hooks for security logging
+
+## Next.js Best Practices
+
+### App Router
+
+- Use app directory structure
+- Implement proper route handlers
+- Use server components by default
+- Add client components only when needed
+- Use proper metadata API
+
+### Performance
+
+- Use Next.js Image component for images
+- Implement proper caching strategies
+- Use dynamic imports for code splitting
+- Optimize bundle size
+- Use proper SEO meta tags
+
+### API Routes
+
+- Use route handlers in app directory
+- Implement proper error handling
+- Use proper HTTP status codes
+- Validate request data
+- Handle CORS properly
+
+## MongoDB Best Practices
+
+### Database Design
+
+- Use proper indexing strategies
+- Design schemas for query efficiency
+- Use proper data types
+- Implement proper validation
+- Use transactions when needed
+
+### Queries
+
+- Use PayloadCMS query methods
+- Implement proper pagination
+- Use aggregation pipelines efficiently
+- Handle large datasets properly
+- Implement proper error handling
+
+## Linting & Code Quality
+
+### Biome Configuration
+
+- Follow Biome v2.0.0 rules
+- Use recommended rule sets
+- Customize rules for project needs
+- Fix auto-fixable issues
+- Address warnings and errors
+
+### Code Quality Rules
+
+- No unused variables or imports
+- No console.log in production
+- Use proper error handling
+- Follow DRY principle
+- Write self-documenting code
+
+### Performance Rules
+
+- Avoid unnecessary re-renders
+- Use proper memoization
+- Optimize bundle size
+- Use proper loading strategies
+- Implement proper caching
+
+## Security Best Practices
+
+### Authentication & Authorization
+
+- Use PayloadCMS access control
+- Implement proper session management
+- Validate user permissions
+- Use secure authentication methods
+- Handle sensitive data properly
+
+### Data Validation
+
+- Validate all user inputs
+- Sanitize data before storage
+- Use proper TypeScript types
+- Implement server-side validation
+- Handle edge cases
+
+### API Security
+
+- Use proper CORS settings
+- Implement rate limiting
+- Validate request data
+- Use secure headers
+- Handle errors securely
+
+## Testing Guidelines
+
+### Unit Testing (Jest + React Testing Library)
+
+- Test individual components
+- Test custom hooks
+- Test utility functions
+- Use proper mocking
+- Maintain good test coverage
+- Use `@testing-library/react` for component testing
+- Use `@testing-library/jest-dom` for custom matchers
+- Use `@testing-library/user-event` for user interactions
+- Use `jest` for test runner and mocking
+- Use `jest-environment-jsdom` for DOM testing
+- Mock PayloadCMS API calls using `jest.mock()`
+- Test component props and state changes
+- Test error boundaries and error states
+- Test loading states and async operations
+- Use `screen` queries for element selection
+- Use `waitFor` for async operations
+- Use `act` for state updates
+- Test accessibility with `@testing-library/jest-dom` matchers
+- Use `data-testid` attributes for complex element selection
+- Test form submissions and validation
+- Test navigation and routing
+- Test context providers and consumers
+
+### Integration Testing (Playwright)
+
+- Test API endpoints
+- Test data flow
+- Test user interactions
+- Use proper test data
+- Test error scenarios
+- Use Playwright for end-to-end testing
+- Test complete user workflows
+- Test cross-browser compatibility
+- Test responsive design
+- Test authentication flows
+- Test admin panel functionality
+- Test form submissions and validation
+- Test file uploads and media handling
+- Test search functionality
+- Test pagination and filtering
+- Test localization and internationalization
+- Test performance and loading times
+- Use Playwright's built-in assertions
+- Use Playwright's network interception
+- Test accessibility with Playwright
+- Use Playwright's visual comparison
+- Test mobile and desktop views
+- Test keyboard navigation
+- Test screen reader compatibility
+
+### Testing Best Practices
+
+- Write tests before or alongside code (TDD/BDD)
+- Use descriptive test names
+- Follow AAA pattern (Arrange, Act, Assert)
+- Keep tests independent and isolated
+- Use proper test data factories
+- Mock external dependencies
+- Test both happy and error paths
+- Use proper cleanup in tests
+- Maintain test coverage above 80%
+- Use snapshot testing sparingly
+- Test edge cases and boundary conditions
+- Use proper timeouts for async operations
+- Test performance critical paths
+- Use proper error handling in tests
+
+### Test Configuration
+
+- Use Jest configuration for unit tests
+- Use Playwright configuration for E2E tests
+- Set up proper test environments
+- Configure test databases
+- Set up test data seeding
+- Use proper test utilities and helpers
+- Configure test reporting and coverage
+- Set up CI/CD test pipelines
+
+## GitHub & GitHub Actions
+
+### Git Workflow
+
+- Use conventional commits format
+- Use feature branches for development
+- Use pull requests for code review
+- Use semantic versioning
+- Use proper branch protection rules
+- Use issue templates for bug reports and features
+- Use pull request templates for code reviews
+- Use proper commit message format
+- Use proper branch naming conventions
+- Use proper tag naming for releases
+
+### GitHub Actions Workflows
+
+- Use GitHub Actions for CI/CD
+- Set up automated testing on pull requests
+- Set up automated deployment on merge to main
+- Use proper environment secrets
+- Use proper workflow permissions
+- Use proper caching for dependencies
+- Use proper matrix testing
+- Use proper conditional workflows
+- Use proper workflow dependencies
+- Use proper error handling in workflows
+- Use proper notifications for failures
+- Use proper artifact management
+- Use proper deployment strategies
+- Use proper rollback procedures
+
+### CI/CD Pipeline
+
+- Run linting and formatting checks
+- Run unit tests with Jest
+- Run integration tests with Playwright
+- Run security scans
+- Run dependency audits
+- Run build verification
+- Run performance tests
+- Run accessibility tests
+- Deploy to staging environment
+- Deploy to production environment
+- Use proper deployment approvals
+- Use proper monitoring and alerting
+- Use proper backup and recovery procedures
+
+### Security & Compliance
+
+- Use Dependabot for dependency updates
+- Use CodeQL for security scanning
+- Use proper secret management
+- Use proper access controls
+- Use proper audit logging
+- Use proper compliance checks
+- Use proper vulnerability scanning
+- Use proper license compliance
+- Use proper data protection measures
+
+## Docker Configuration
+
+### Multi-Container Architecture
+
+- Use Docker for containerization
+- Create separate containers for client and admin
+- Use Docker Compose for local development
+- Use proper container orchestration
+- Use proper service discovery
+- Use proper load balancing
+- Use proper health checks
+- Use proper logging and monitoring
+- Use proper resource limits
+- Use proper security practices
+
+### Client Container
+
+- Expose all routes except `/admin`
+- Serve Next.js application
+- Handle client-side routing
+- Serve static assets
+- Handle API proxy to admin container
+- Use proper caching strategies
+- Use proper compression
+- Use proper security headers
+- Use proper error handling
+- Use proper monitoring
+
+### Admin Container
+
+- Expose only `/admin` routes
+- Serve PayloadCMS admin panel
+- Handle admin authentication
+- Handle admin API endpoints
+- Handle file uploads and media
+- Use proper access controls
+- Use proper session management
+- Use proper audit logging
+- Use proper backup procedures
+- Use proper monitoring
+
+### Docker Configuration Files
+
+- Use proper Dockerfile for each container
+- Use proper .dockerignore files
+- Use proper docker-compose.yml
+- Use proper environment variables
+- Use proper volume mounts
+- Use proper network configuration
+- Use proper health checks
+- Use proper restart policies
+- Use proper resource limits
+- Use proper security configurations
+
+### Development Environment
+
+- Use Docker Compose for local development
+- Use proper development volumes
+- Use proper hot reloading
+- Use proper debugging tools
+- Use proper logging
+- Use proper database seeding
+- Use proper test data
+- Use proper development tools
+- Use proper documentation
+
+### Production Environment
+
+- Use proper production builds
+- Use proper production images
+- Use proper production networking
+- Use proper production security
+- Use proper production monitoring
+- Use proper production logging
+- Use proper production backups
+- Use proper production scaling
+- Use proper production deployment
+- Use proper production rollback
+
+### Container Security
+
+- Use non-root users in containers
+- Use proper image scanning
+- Use proper vulnerability scanning
+- Use proper access controls
+- Use proper network policies
+- Use proper resource limits
+- Use proper logging and monitoring
+- Use proper backup and recovery
+- Use proper compliance measures
+
+### Code Examples
+
+#### Jest Unit Test Example
+
+```typescript
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { PostList } from "./PostList";
+
+// Mock PayloadCMS API
+jest.mock("payload/next", () => ({
+  getPayload: jest.fn(() => ({
+    find: jest.fn(() => ({
+      docs: [
+        { id: "1", title: "Test Post 1", slug: "test-post-1" },
+        { id: "2", title: "Test Post 2", slug: "test-post-2" },
+      ],
+    })),
+  })),
+}));
+
+describe("PostList", () => {
+  it("renders posts correctly", async () => {
+    render(<PostList posts={[]} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Test Post 1")).toBeInTheDocument();
+      expect(screen.getByText("Test Post 2")).toBeInTheDocument();
+    });
+  });
+
+  it("handles post selection", async () => {
+    const user = userEvent.setup();
+    render(<PostList posts={[]} />);
+
+    const postElement = screen.getByText("Test Post 1");
+    await user.click(postElement);
+
+    // Test post selection logic
+  });
+
+  it("handles empty posts", () => {
+    render(<PostList posts={[]} />);
+
+    expect(screen.getByText("No posts found")).toBeInTheDocument();
+  });
+});
+```
+
+#### Playwright Integration Test Example
+
+```typescript
+import { test, expect } from "@playwright/test";
+
+test.describe("Post Management", () => {
+  test("should create a new post", async ({ page }) => {
+    // Navigate to admin panel
+    await page.goto("/admin");
+
+    // Login to admin
+    await page.fill('[data-testid="email"]', "admin@example.com");
+    await page.fill('[data-testid="password"]', "password");
+    await page.click('[data-testid="login-button"]');
+
+    // Navigate to posts collection
+    await page.click("text=Posts");
+    await page.click("text=Create New");
+
+    // Fill post form
+    await page.fill('[name="title"]', "Test Post");
+    await page.fill('[name="content"]', "Test content");
+    await page.selectOption('[name="status"]', "published");
+
+    // Submit form
+    await page.click("text=Save");
+
+    // Verify post was created
+    await expect(page.locator("text=Post created successfully")).toBeVisible();
+  });
+
+  test("should display posts on frontend", async ({ page }) => {
+    await page.goto("/posts");
+
+    // Verify posts are displayed
+    await expect(page.locator("text=Test Post")).toBeVisible();
+
+    // Test pagination
+    await page.click('[data-testid="next-page"]');
+    await expect(page.locator("text=Page 2")).toBeVisible();
+  });
+
+  test("should handle search functionality", async ({ page }) => {
+    await page.goto("/search");
+
+    await page.fill('[data-testid="search-input"]', "test");
+    await page.click('[data-testid="search-button"]');
+
+    await expect(page.locator("text=Test Post")).toBeVisible();
+  });
+});
+```
+
+#### GitHub Actions Workflow Example
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6
+        ports:
+          - 27017:27017
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run linting
+        run: pnpm run lint
+
+      - name: Run unit tests
+        run: pnpm run test:unit
+        env:
+          MONGODB_URI: mongodb://localhost:27017/test
+
+      - name: Run integration tests
+        run: pnpm run test:e2e
+        env:
+          MONGODB_URI: mongodb://localhost:27017/test
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build client image
+        run: |
+          docker build -f Dockerfile.client -t client:${{ github.sha }} .
+
+      - name: Build admin image
+        run: |
+          docker build -f Dockerfile.admin -t admin:${{ github.sha }} .
+
+      - name: Push to registry
+        run: |
+          docker push client:${{ github.sha }}
+          docker push admin:${{ github.sha }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to production
+        run: |
+          # Deploy client and admin containers
+          kubectl set image deployment/client client=client:${{ github.sha }}
+          kubectl set image deployment/admin admin=admin:${{ github.sha }}
+```
+
+#### Docker Compose Example
+
+```yaml
+version: "3.8"
+
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PAYLOAD_PUBLIC_SERVER_URL=http://admin:3000
+    depends_on:
+      - admin
+    networks:
+      - app-network
+
+  admin:
+    build:
+      context: .
+      dockerfile: Dockerfile.admin
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/payload
+      - PAYLOAD_SECRET=your-secret-key
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
+    driver: bridge
+```
+
+#### Client Dockerfile Example
+
+```dockerfile
+# Dockerfile.client
+FROM node:20-alpine AS base
+
+# Install pnpm
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN pnpm run build
+
+# Production stage
+FROM node:20-alpine AS production
+
+# Install pnpm
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+# Copy built application
+COPY --from=base /app/.next ./.next
+COPY --from=base /app/public ./public
+COPY --from=base /app/package*.json ./
+COPY --from=base /app/pnpm-lock.yaml ./
+COPY --from=base /app/node_modules ./node_modules
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
+# Change ownership
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/api/health || exit 1
+
+# Start the application
+CMD ["pnpm", "start"]
+```
+
+#### Admin Dockerfile Example
+
+```dockerfile
+# Dockerfile.admin
+FROM node:20-alpine AS base
+
+# Install pnpm
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN pnpm run build
+
+# Production stage
+FROM node:20-alpine AS production
+
+# Install pnpm
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+# Copy built application
+COPY --from=base /app/.next ./.next
+COPY --from=base /app/public ./public
+COPY --from=base /app/package*.json ./
+COPY --from=base /app/pnpm-lock.yaml ./
+COPY --from=base /app/node_modules ./node_modules
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
+# Change ownership
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/admin/api/health || exit 1
+
+# Start the application
+CMD ["pnpm", "start"]
+```
+
+## Common Patterns
+
+### Server Component Pattern
+
+```typescript
+// page.tsx (Server Component)
+import { getPayload } from "payload/next";
+import { PostList } from "./PostList";
+
+export default async function PostsPage() {
+  const payload = await getPayload();
+  const posts = await payload.find({
+    collection: "posts",
+    limit: 10,
+  });
+
+  return <PostList posts={posts.docs} />;
+}
+```
+
+### Client Component Pattern (with memoization)
+
+```typescript
+"use client";
+
+import { useState, memo } from "react";
+import { Post } from "payload/generated-types";
+
+interface Props {
+  posts: Post[];
+}
+
+const PostList_ = ({ posts }: Props) => {
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+
+  return (
+    <div>
+      {posts.map((post) => (
+        <div key={post.id} onClick={() => setSelectedPost(post)}>
+          {post.title}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export const PostList = memo(PostList_);
+```
+
+## Anti-Patterns to Avoid
+
+### Don't Do This
+
+```typescript
+// ❌ Namespace exports
+export namespace Utils {
+  export const formatDate = () => {}
+}
+
+// ❌ ComponentNameProps instead of Props
+interface ButtonProps {
+  children: React.ReactNode
+}
+
+// ❌ No memoization for components with props
+export const MyComponent = ({ children }: Props) => {
+  return <div>{children}</div>
+}
+
+// ❌ No barrel exports
+// components/Button.tsx - direct export without index.ts
+
+// ❌ Any types
+const data: any = await fetchData()
+
+// ❌ Console.log in production
+console.log('Debug info')
+
+// ❌ Unused variables
+const unusedVar = 'not used'
+
+// ❌ Missing error handling
+const response = await fetch('/api/data')
+const data = await response.json()
+
+// ❌ Inline styles
+<div style={{ color: 'red', fontSize: '16px' }}>
+
+// ❌ Missing key props
+{items.map(item => <div>{item.name}</div>)}
+
+// ❌ Unnecessary re-renders
+const Component = () => {
+  const [count, setCount] = useState(0)
+
+  // This will cause re-renders on every render
+  const expensiveValue = expensiveCalculation(count)
+
+  return <div>{expensiveValue}</div>
+}
+```
+
+### Do This Instead
+
+```typescript
+// ✅ Named exports
+export const formatDate = () => {}
+
+// ✅ Props interface for non-exported interfaces
+interface Props {
+  children: React.ReactNode
+}
+
+// ✅ Memoization pattern for components with props
+const Button_ = ({ children }: Props) => {
+  return <div>{children}</div>
+}
+
+export const Button = memo(Button_)
+
+// ✅ Barrel exports
+// components/button/index.ts
+export { Button } from './Button'
+
+// ✅ Proper typing
+const data: ApiResponse = await fetchData()
+
+// ✅ Proper logging
+if (process.env.NODE_ENV === 'development') {
+  console.log('Debug info')
+}
+
+// ✅ Remove unused variables
+// const unusedVar = 'not used' // Remove this line
+
+// ✅ Proper error handling
+try {
+  const response = await fetch('/api/data')
+  if (!response.ok) throw new Error('API error')
+  const data = await response.json()
+} catch (error) {
+  console.error('Error:', error)
+}
+
+// ✅ CSS classes
+<div className="text-red-500 text-base">
+
+// ✅ Key props
+{items.map(item => <div key={item.id}>{item.name}</div>)}
+
+// ✅ Memoized calculations
+const Component = () => {
+  const [count, setCount] = useState(0)
+
+  const expensiveValue = useMemo(() =>
+    expensiveCalculation(count),
+    [count]
+  )
+
+  return <div>{expensiveValue}</div>
+}
+```
+
+## Final Notes
+
+- Always prioritize code readability and maintainability
+- Follow the established patterns in the codebase
+- Write tests for critical functionality
+- Keep dependencies up to date
+- Monitor performance and user experience
+- Document complex business logic
+- Use proper error handling throughout
+- Follow security best practices
+- Optimize for accessibility
+- Maintain consistent code style
+- Use fractal structure for component organization
+- Implement barrel exports for clean imports
+- Memoize components with props using the established pattern
+
+### Good PayloadCMS API Route Example
+
+```typescript
+import { NextRequest, NextResponse } from "next/server";
+import { getPayload } from "payload/next";
+
+export async function GET(request: NextRequest) {
+  try {
+    const payload = await getPayload();
+    const { searchParams } = new URL(request.url);
+
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const category = searchParams.get("category");
+    const search = searchParams.get("search");
+
+    const query: any = {
+      collection: "posts",
+      limit,
+      page,
+      where: {
+        status: {
+          equals: "published",
+        },
+      },
+      sort: "-publishedAt",
+    };
+
+    if (category) {
+      query.where.category = {
+        equals: category,
+      };
+    }
+
+    if (search) {
+      query.where.or = [
+        {
+          title: {
+            contains: search,
+          },
+        },
+        {
+          content: {
+            contains: search,
+          },
+        },
+      ];
+    }
+
+    const posts = await payload.find(query);
+
+    return NextResponse.json({
+      posts: posts.docs,
+      pagination: {
+        page: posts.page,
+        totalPages: posts.totalPages,
+        totalDocs: posts.totalDocs,
+        hasNextPage: posts.hasNextPage,
+        hasPrevPage: posts.hasPrevPage,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+## Dependencies & Packages
+
+### Package Management
+
+- **Use pnpm exclusively** - no npm, yarn, or other package managers
+- Use pnpm for all package installations and scripts
+- Keep dependencies up to date with `pnpm update`
+- Use proper version ranges
+- Audit dependencies regularly with `pnpm audit`
+- Minimize bundle size
+- Use `pnpm install` for fresh installations
+- Use `pnpm add` for adding new dependencies
+- Use `pnpm remove` for removing dependencies
+- Use `pnpm run` for executing scripts
+- Use `pnpm exec` for running binaries
+- Use `pnpm dlx` for one-time package execution
+- Use `pnpm store prune` for cleaning unused packages
+- Use `pnpm why` for dependency analysis
+- Use `pnpm list` for dependency tree visualization
+
+### External Libraries
+
+- Choose well-maintained libraries
+- Check bundle impact
+- Use tree-shaking when possible
+- Prefer smaller alternatives
+- Keep dependencies minimal
+- Use `pnpm add -D` for dev dependencies
+- Use `pnpm add -P` for peer dependencies
+- Use `pnpm add -O` for optional dependencies
+
+### Lefthook Configuration Example
+
+```yaml
+# lefthook.yml
+pre-commit:
+  parallel: false
+  commands:
+    biome_format:
+      glob: "*.{js,jsx,ts,tsx,json,md,yaml,yml}"
+      run: pnpm exec biome format {staged_files}
+      stage_fixed: true
+    biome_check:
+      glob: "*.{js,jsx,ts,tsx,json,md,yaml,yml}"
+      run: pnpm exec biome check {staged_files}
+
+pre-push:
+  parallel: false
+  commands:
+    test:
+      run: pnpm run test || true
+    build:
+      run: pnpm run build || true
+```

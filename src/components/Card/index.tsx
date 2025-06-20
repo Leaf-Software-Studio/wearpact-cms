@@ -1,12 +1,10 @@
 'use client'
-import { cn } from '@/utilities/ui'
-import useClickableCard from '@/utilities/useClickableCard'
 import Link from 'next/link'
 import React, { Fragment } from 'react'
-
-import type { Post } from '@/payload-types'
-
 import { Media } from '@/components/Media'
+import type { Post } from '@/payload-types'
+import { cn } from '@/utilities/ui'
+import useClickableCard from '@/utilities/useClickableCard'
 
 export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title'>
 
@@ -17,7 +15,7 @@ export const Card: React.FC<{
   relationTo?: 'posts'
   showCategories?: boolean
   title?: string
-}> = (props) => {
+}> = props => {
   const { card, link } = useClickableCard({})
   const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
@@ -31,10 +29,7 @@ export const Card: React.FC<{
 
   return (
     <article
-      className={cn(
-        'border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer',
-        className,
-      )}
+      className={cn('border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer', className)}
       ref={card.ref}
     >
       <div className="relative w-full ">
@@ -55,9 +50,9 @@ export const Card: React.FC<{
                     const isLast = index === categories.length - 1
 
                     return (
-                      <Fragment key={index}>
+                      <Fragment key={categoryTitle}>
                         {categoryTitle}
-                        {!isLast && <Fragment>, &nbsp;</Fragment>}
+                        {!isLast && ', &nbsp;'}
                       </Fragment>
                     )
                   }

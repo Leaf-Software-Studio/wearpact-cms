@@ -1,9 +1,7 @@
-import { formatDateTime } from 'src/utilities/formatDateTime'
 import React from 'react'
-
-import type { Post } from '@/payload-types'
-
+import { formatDateTime } from 'src/utilities/formatDateTime'
 import { Media } from '@/components/Media'
+import type { Post } from '@/payload-types'
 import { formatAuthors } from '@/utilities/formatAuthors'
 
 export const PostHero: React.FC<{
@@ -11,8 +9,7 @@ export const PostHero: React.FC<{
 }> = ({ post }) => {
   const { categories, heroImage, populatedAuthors, publishedAt, title } = post
 
-  const hasAuthors =
-    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
+  const hasAuthors = populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   return (
     <div className="relative -mt-[10.4rem] flex items-end">
@@ -28,9 +25,10 @@ export const PostHero: React.FC<{
                 const isLast = index === categories.length - 1
 
                 return (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: Payload CMS Template
                   <React.Fragment key={index}>
                     {titleToUse}
-                    {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
+                    {!isLast && ', &nbsp;'}
                   </React.Fragment>
                 )
               }

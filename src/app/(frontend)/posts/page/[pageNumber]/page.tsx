@@ -1,13 +1,11 @@
+import configPromise from '@payload-config'
+import { notFound } from 'next/navigation'
 import type { Metadata } from 'next/types'
-
+import { getPayload } from 'payload'
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
-import React from 'react'
 import PageClient from './page.client'
-import { notFound } from 'next/navigation'
 
 export const revalidate = 600
 
@@ -43,20 +41,13 @@ export default async function Page({ params: paramsPromise }: Args) {
       </div>
 
       <div className="container mb-8">
-        <PageRange
-          collection="posts"
-          currentPage={posts.page}
-          limit={12}
-          totalDocs={posts.totalDocs}
-        />
+        <PageRange collection="posts" currentPage={posts.page} limit={12} totalDocs={posts.totalDocs} />
       </div>
 
       <CollectionArchive posts={posts.docs} />
 
       <div className="container">
-        {posts?.page && posts?.totalPages > 1 && (
-          <Pagination page={posts.page} totalPages={posts.totalPages} />
-        )}
+        {posts?.page && posts?.totalPages > 1 && <Pagination page={posts.page} totalPages={posts.totalPages} />}
       </div>
     </div>
   )
