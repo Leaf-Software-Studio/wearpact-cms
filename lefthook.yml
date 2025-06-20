@@ -1,10 +1,11 @@
+# lefthook.yml
 pre-commit:
   parallel: true
   commands:
     biome:
       # Run Biome on every staged JS/TS/MD/YAML file
-      glob: "*.{js,jsx,ts,tsx,md,yaml,yml}"
-      run: biome check --apply {staged_files}
+      glob: "*.{js,jsx,ts,tsx,json,md,yaml,yml}"
+      run: pnpm exec biome check --write {staged_files}
       stage_fixed: true
 
 pre-push:

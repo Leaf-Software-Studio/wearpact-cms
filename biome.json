@@ -1,9 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.0/schema.json",
-  "extends": ["@biome:recommended"],
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
   "linter": {
     "enabled": true,
     "rules": {
@@ -20,9 +16,7 @@
         "useImportType": "off"
       },
       "suspicious": {
-        "noExplicitAny": "warn",
-        "noUnusedVariables": "warn",
-        "banTsComment": "warn"
+        "noExplicitAny": "warn"
       }
     }
   },
@@ -31,8 +25,7 @@
     "lineWidth": 120,
     "indentWidth": 2,
     "indentStyle": "space",
-    "lineEnding": "lf",
-    "trailingCommas": "none"
+    "lineEnding": "lf"
   },
   "javascript": {
     "formatter": {
@@ -40,19 +33,16 @@
       "semicolons": "asNeeded",
       "trailingCommas": "all",
       "bracketSpacing": true,
-      "arrowParens": "asNeeded",
-      "arrowFunctionParentheses": "asNeeded",
-      "objectCurlySpacing": true,
-      "arrayBracketSpacing": "always",
-      "jsxBracketSameLine": false,
-      "jsxSingleQuote": false
+      "arrowParentheses": "asNeeded",
+      "bracketSameLine": false,
+      "jsxQuoteStyle": "double"
     },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
     }
   },
   "files": {
-    "include": ["**/*.{js,jsx,ts,tsx,json,md,yml,yaml}"],
-    "ignore": ["node_modules", "dist", ".next"]
+    "includes": ["**/*.{js,jsx,ts,tsx,json,md,yml,yaml}"],
+    "ignoreUnknown": false
   }
 }
